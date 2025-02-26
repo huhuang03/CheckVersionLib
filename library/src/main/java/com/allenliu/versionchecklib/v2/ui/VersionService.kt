@@ -3,6 +3,7 @@ package com.allenliu.versionchecklib.v2.ui
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import androidx.annotation.WorkerThread
@@ -49,6 +50,9 @@ class VersionService : Service() {
             val intent = Intent(context, VersionService::class.java)
             //显示通知栏的情况 才设置为前台服务
             if (builder.isRunOnForegroundService && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    intent.putExtra("foreground_service_type", ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                }
                 context.startForegroundService(intent)
             } else {
                 context.startService(intent)
